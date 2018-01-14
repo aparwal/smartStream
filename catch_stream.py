@@ -6,22 +6,25 @@ import numpy as np
 import time
 
 # Replace the URL with your own IPwebcam shot.jpg IP:port
-url='http://130.215.122.188:8080/shot.jpg'
+url='http://130.215.122.188:8080/video'
 
 
 while True:
     # Use urllib to get the image from the IP camera
-    imgResp = urllib.request.urlopen(url)
+    # imgResp = urllib.request.urlopen(url)
     
     # Numpy to convert into a array
-    imgNp = np.array(bytearray(imgResp.read()),dtype=np.uint8)
+    video_capture = cv2.VideoCapture(url)
+    ret, frame = video_capture.read()
+    # print(frame.shape)
+    # imgNp = np.array(bytearray(video_capture.read()),dtype=np.uint8)
     
     # Finally decode the array to OpenCV usable format ;) 
-    img = cv2.imdecode(imgNp,-1)
+    # img = cv2.imdecode(frame,1)
 	
 	
 	# put the image on screen
-    cv2.imshow('IPWebcam',img)
+    cv2.imshow('IPWebcam',frame)
 
     #To give the processor some less stress
     #time.sleep(0.1) 

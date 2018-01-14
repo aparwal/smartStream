@@ -2,21 +2,27 @@ import cv2
 import sys
 import numpy as np
 
+url='http://130.215.122.188:8080/video'
+fps=2
+device=url
+motion_scale=1
+
 def motion_scorer(frame,oldFrame):
     if (oldFrame) is not None:
         frameDelta = cv2.absdiff(frame, oldFrame)
         cv2.imshow("frameDelta", frameDelta)
         change = np.sum(frameDelta ** 2)
-        return change/1000000
+        return change*motion_scale/(frame.shape[0]*frame.shape[1])
     else:
         return 0
 
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-video_capture = cv2.VideoCapture(0)
+
+
+video_capture = cv2.VideoCapture(device)
 framenos=0
-fps=2
 ret, prev_frame = video_capture.read()
 prev_frame = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
 prev_frame = cv2.GaussianBlur(prev_frame, (21, 21), 0)
